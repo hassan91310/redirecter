@@ -1,27 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verify OTP - Shubble App</title>
-    <script>
-        function redirectToApp() {
-            // Define deep link and Play Store link
-            var deepLink = "shubbleapp://shubbleapp.com/oTPverification/";
-            var playStoreLink = "https://play.google.com/store/apps/details?id=com.shubble.app";
-            
-            // Try opening the app
-            window.location.href = deepLink;
-            
-            // If the app is not installed, redirect to Play Store after 2 seconds
-            setTimeout(function () {
-                window.location.href = playStoreLink;
-            }, 2000);
-        }
-    </script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verify OTP - Shubble App</title>
+<script>
+function redirectToApp() {
+  // Get the verificationCode value from the URL query parameter
+  var urlParams = new URLSearchParams(window.location.search);
+  var verificationCode = urlParams.get('verificationCode'); // This will get the value of 'verificationCode' from the URL
+  
+  // Define the deep link with the verificationCode value
+  var deepLink = "shubbleapp://shubbleapp.com/oTPverification/?verificationCode=" + verificationCode;
+  var playStoreLink = "https://play.google.com/store/apps/details?id=com.shubble.app";
+
+  // Try opening the app
+  window.location.href = deepLink;
+
+  // If the app is not installed, redirect to Play Store after 2 seconds
+  setTimeout(function () {
+    window.location.href = playStoreLink;
+  }, 2000);
+}
+</script>
 </head>
 <body onload="redirectToApp()">
-    <h2>Redirecting to Shubble App...</h2>
-    <p>If the app does not open, <a href="https://play.google.com/store/apps/details?id=com.shubble.app">click here to download</a>.</p>
+<h2>Redirecting to Shubble App...</h2>
+<p>If the app does not open, <a href="https://play.google.com/store/apps/details?id=com.shubble.app">click here to download</a>.</p>
 </body>
 </html>
