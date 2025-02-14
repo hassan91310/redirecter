@@ -6,18 +6,34 @@
 <title>Verify OTP - Shubble App</title>
 <script>
 function redirectToApp() {
-  // Get the verificationCode value from the URL query parameter
+  // Get parameters from the URL
   var urlParams = new URLSearchParams(window.location.search);
-  var verificationCode = urlParams.get('verificationCode'); // This will get the value of 'verificationCode' from the URL
-  
-  // Define the deep link with the verificationCode value
-  var deepLink = "shubbleapp://shubbleapp.com/phoneAuthentication/?verificationCode=" + verificationCode;
+
+  var verificationCode = urlParams.get('verificationCode');
+  var fullName = urlParams.get('fullName');
+  var dateOfBirth = urlParams.get('dateOfBirth'); // ISO format datetime
+  var isDependent = urlParams.get('isDependent'); // String 'true' or 'false'
+  var parentRef = urlParams.get('parentRef'); // Firestore Document Reference (e.g., 'users/parent123')
+  var phoneNumber = urlParams.get('phoneNumber');
+
+  // Convert isDependent to Boolean
+  isDependent = (isDependent === 'true');
+
+  // Construct deep link
+  var deepLink = "shubbleapp://shubbleapp.com/oTPverification/?" +
+                 "verificationCode=" + encodeURIComponent(verificationCode) +
+                 "&fullName=" + encodeURIComponent(fullName) +
+                 "&dateOfBirth=" + encodeURIComponent(dateOfBirth) +
+                 "&isDependent=" + isDependent +
+                 "&parentRef=" + encodeURIComponent(parentRef) +
+                 "&phoneNumber=" + encodeURIComponent(phoneNumber);
+
   var playStoreLink = "https://play.google.com/store/apps/details?id=com.shubble.app";
 
   // Try opening the app
   window.location.href = deepLink;
 
-  // If the app is not installed, redirect to Play Store after 2 seconds
+  // If the app is not installed, redirect to the Play Store after 2 seconds
   setTimeout(function () {
     window.location.href = playStoreLink;
   }, 2000);
