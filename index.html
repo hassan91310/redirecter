@@ -11,7 +11,7 @@ function redirectToApp() {
   var verificationCode = urlParams.get('verificationCode'); // This will get the value of 'verificationCode' from the URL
   
   // Define the deep link with the verificationCode value
-  var deepLink = "shubbleapp://shubbleapp.com/oTPverification/?verificationCode=" + verificationCode;
+  var deepLink = "shubbleapp://shubbleapp.com/phoneAuthentication/?verificationCode=" + verificationCode;
   var playStoreLink = "https://play.google.com/store/apps/details?id=com.shubble.app";
 
   // Try opening the app
