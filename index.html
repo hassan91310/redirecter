@@ -26,7 +26,7 @@ function redirectToApp() {
   if (redirectType === "childBooking") {
     // Construct deep link for child booking request
     deepLink = "shubbleapp://shubbleapp.com/childBookingRequest/?" +
-               "fullName=" + encodeURIComponent(fullName) +
+               "childRef=" + encodeURIComponent(childRef) +
                "&bookingRef=" + encodeURIComponent(bookingRef);
   } else {
     // Construct deep link for phone authentication
