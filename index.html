@@ -16,6 +16,7 @@ function redirectToApp() {
   var phoneNumber = urlParams.get('phoneNumber');
   var bookingRef = urlParams.get('bookingRef'); // New parameter for child booking
   var redirectType = urlParams.get('redirectType'); // Conditional variable
+  var childRef = urlParams.get('childRef'); // New parameter for child reference
   
   // Convert isDependent to Boolean
   isDependent = (isDependent === 'true');
@@ -32,12 +33,21 @@ function redirectToApp() {
   var deepLink;
   
   if (redirectType === "childBooking") {
+    // Ensure childRef and bookingRef are provided
+    if (!childRef || !bookingRef) {
+      alert("Error: Missing required parameters for child booking (childRef or bookingRef).");
+      return;
+    }
     // Construct deep link for child booking request
     deepLink = "shubbleapp://shubbleapp.com/childBookingRequest/?" +
                "childRef=" + encodeURIComponent(childRef) +
                "&bookingRef=" + encodeURIComponent(bookingRef);
   } else {
     // Construct deep link for phone authentication
+    if (!verificationCode || !fullName || !dateOfBirth || !phoneNumber) {
+      alert("Error: Missing required parameters for phone authentication.");
+      return;
+    }
     deepLink = "shubbleapp://shubbleapp.com/phoneAuthentication/?" +
                "verificationCode=" + encodeURIComponent(verificationCode) +
                "&fullName=" + encodeURIComponent(fullName) +
