@@ -8,25 +8,36 @@
 function redirectToApp() {
   // Get parameters from the URL
   var urlParams = new URLSearchParams(window.location.search);
-
   var verificationCode = urlParams.get('verificationCode');
   var fullName = urlParams.get('fullName');
   var dateOfBirth = urlParams.get('dateOfBirth'); // ISO format datetime
   var isDependent = urlParams.get('isDependent'); // String 'true' or 'false'
   var parentRef = urlParams.get('parentRef'); // Firestore Document Reference (e.g., 'users/parent123')
   var phoneNumber = urlParams.get('phoneNumber');
-
+  var bookingRef = urlParams.get('bookingRef'); // New parameter for child booking
+  var redirectType = urlParams.get('redirectType'); // Conditional variable
+  
   // Convert isDependent to Boolean
   isDependent = (isDependent === 'true');
 
-  // Construct deep link
-  var deepLink = "shubbleapp://shubbleapp.com/phoneAuthentication/?" +
-                 "verificationCode=" + encodeURIComponent(verificationCode) +
-                 "&fullName=" + encodeURIComponent(fullName) +
-                 "&dateOfBirth=" + encodeURIComponent(dateOfBirth) +
-                 "&isDependent=" + isDependent +
-                 "&parentRef=" + encodeURIComponent(parentRef) +
-                 "&phoneNumber=" + encodeURIComponent(phoneNumber);
+  // Determine which deep link to use based on the 'redirectType' parameter
+  var deepLink;
+  
+  if (redirectType === "childBooking") {
+    // Construct deep link for child booking request
+    deepLink = "shubbleapp://shubbleapp.com/childBookingRequest/?" +
+               "fullName=" + encodeURIComponent(fullName) +
+               "&bookingRef=" + encodeURIComponent(bookingRef);
+  } else {
+    // Construct deep link for phone authentication
+    deepLink = "shubbleapp://shubbleapp.com/phoneAuthentication/?" +
+               "verificationCode=" + encodeURIComponent(verificationCode) +
+               "&fullName=" + encodeURIComponent(fullName) +
+               "&dateOfBirth=" + encodeURIComponent(dateOfBirth) +
+               "&isDependent=" + isDependent +
+               "&parentRef=" + encodeURIComponent(parentRef) +
+               "&phoneNumber=" + encodeURIComponent(phoneNumber);
+  }
 
   var playStoreLink = "https://play.google.com/store/apps/details?id=com.shubble.app";
 
