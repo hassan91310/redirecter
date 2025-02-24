@@ -20,6 +20,14 @@ function redirectToApp() {
   // Convert isDependent to Boolean
   isDependent = (isDependent === 'true');
 
+  // Display the value of redirectType on the page
+  var redirectTypeElement = document.getElementById("redirectTypeValue");
+  if (redirectType) {
+    redirectTypeElement.textContent = redirectType;
+  } else {
+    redirectTypeElement.textContent = "Not provided";
+  }
+
   // Determine which deep link to use based on the 'redirectType' parameter
   var deepLink;
   
@@ -54,5 +62,8 @@ function redirectToApp() {
 <body onload="redirectToApp()">
 <h2>Redirecting to Shubble App...</h2>
 <p>If the app does not open, <a href="https://play.google.com/store/apps/details?id=com.shubble.app">click here to download</a>.</p>
+
+<!-- Display the value of redirectType -->
+<p><strong>Redirect Type:</strong> <span id="redirectTypeValue">Loading...</span></p>
 </body>
 </html>
