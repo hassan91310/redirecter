@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment Redirect</title>
+</head>
+<body>
+    <script>
+        function getReference() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('reference');
+        }
+
+        function redirectToDeepLink() {
+            const reference = getReference();
+
+            if (reference) {
+                const deepLink = `shubbleapp://shubbleapp.com/paymentconfirmation?reference=${encodeURIComponent(reference)}`;
+                window.location.href = deepLink;
+            } else {
+                alert("Reference not found.");
+            }
+        }
+
+        redirectToDeepLink();
+    </script>
+</body>
+</html>
