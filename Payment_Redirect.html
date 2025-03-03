@@ -14,7 +14,7 @@
             const reference = getReference();
 
             if (reference) {
-                const deepLink = `shubbleapp://shubbleapp.com/paymentconfirmation?reference=${encodeURIComponent(reference)}`;
+                const deepLink = `shubbleapp://shubbleapp.com/paymentconfirmation?transactionReference=${encodeURIComponent(reference)}`;
                 window.location.href = deepLink;
             } else {
                 alert("Reference not found.");
