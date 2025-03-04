@@ -5,19 +5,21 @@
 </head>
 <body>
     <script>
-        function getReference() {
+        function getReferences() {
             const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get('reference');
+            const transactionReference = urlParams.get('reference'); // Original 'reference' now used as transactionReference
+            const bookingReference = urlParams.get('bookingReference');
+            return { transactionReference, bookingReference };
         }
 
         function redirectToDeepLink() {
-            const reference = getReference();
+            const { transactionReference, bookingReference } = getReferences();
 
-            if (reference) {
-                const deepLink = `shubbleapp://shubbleapp.com/paymentconfirmation?transactionReference=${encodeURIComponent(reference)}`;
+            if (transactionReference && bookingReference) {
+                const deepLink = `shubbleapp://shubbleapp.com/paymentconfirmation?transactionReference=${encodeURIComponent(transactionReference)}&bookingReference=${encodeURIComponent(bookingReference)}`;
                 window.location.href = deepLink;
             } else {
-                alert("Reference not found.");
+                alert("One or both references not found.");
             }
         }
 
