@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Recurring Payment Redirect</title>
+</head>
+<body>
+    <script>
+        function getReferences() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const transactionReference = urlParams.get('reference');
+            const bookingReferencesString = urlParams.get('bookingReferences');
+
+            if (bookingReferencesString) {
+                try {
+                    const bookingReferences = JSON.parse(decodeURIComponent(bookingReferencesString));
+                    return { transactionReference, bookingReferences };
+                } catch (error) {
+                    console.error('Error parsing booking references:', error);
+                    return null;
+                }
+            } else {
+                return null;
+            }
+        }
+
+        function redirectToDeepLink() {
+            const { transactionReference, bookingReferences } = getReferences();
+
+            if (transactionReference && bookingReferences && Array.isArray(bookingReferences)) {
+                const encodedBookingReferences = encodeURIComponent(JSON.stringify(bookingReferences));
+                const deepLink = `shubbleapp://shubbleapp.com/paymentconfirmation?transactionReference=${encodeURIComponent(transactionReference)}&bookingReferences=${encodedBookingReferences}`;
+                window.location.href = deepLink;
+            } else {
+                alert("Transaction reference or booking references not found or are invalid.");
+            }
+        }
+
+        redirectToDeepLink();
+    </script>
+</body>
+</html>
