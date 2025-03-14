@@ -15,18 +15,28 @@
             displayMessage("Fetching references from URL...");
             const urlParams = new URLSearchParams(window.location.search);
             const transactionReference = urlParams.get('trxref');
-            let bookingReferencesString = urlParams.get('bookingReference'); // Ensure correct parameter name
+
+            let bookingReferencesString = urlParams.get('bookingReference');
+
+            // Fallback: Extract bookingReference manually using regex if URLSearchParams fails
+            if (!bookingReferencesString) {
+                console.warn("⚠️ bookingReference not found via URLSearchParams. Trying regex...");
+                const match = window.location.search.match(/bookingReference=([^&]+)/);
+                if (match) {
+                    bookingReferencesString = decodeURIComponent(match[1]);
+                    console.log("🔹 Extracted via regex:", bookingReferencesString);
+                }
+            }
 
             console.log("🔹 Raw transactionReference:", transactionReference);
             console.log("🔹 Raw bookingReferencesString:", bookingReferencesString);
 
             if (bookingReferencesString) {
                 try {
-                    // Ensure correct decoding
                     bookingReferencesString = decodeURIComponent(bookingReferencesString);
                     console.log("🔹 Decoded bookingReferencesString:", bookingReferencesString);
 
-                    // Ensure JSON format (sometimes brackets get lost)
+                    // Ensure JSON format (sometimes brackets get stripped)
                     if (!bookingReferencesString.startsWith("[") && !bookingReferencesString.endsWith("]")) {
                         bookingReferencesString = "[" + bookingReferencesString + "]";
                         console.log("🔹 Fixed JSON format:", bookingReferencesString);
