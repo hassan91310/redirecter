@@ -7,8 +7,11 @@
     <script>
         function getReferences() {
             const urlParams = new URLSearchParams(window.location.search);
-            const transactionReference = urlParams.get('reference'); // Original 'reference' now used as transactionReference
+            console.log("Raw URL Params:", urlParams.toString());
+            const transactionReference = urlParams.get('reference'); 
             const bookingReference = urlParams.get('bookingReference');
+            console.log("Transaction Reference:", transactionReference);
+            console.log("Booking Reference:", bookingReference);
             return { transactionReference, bookingReference };
         }
 
@@ -17,8 +20,10 @@
 
             if (transactionReference && bookingReference) {
                 const deepLink = `shubbleapp://shubbleapp.com/paymentconfirmation?transactionReference=${encodeURIComponent(transactionReference)}&bookingReference=${encodeURIComponent(bookingReference)}`;
+                console.log("Redirecting to:", deepLink);
                 window.location.href = deepLink;
             } else {
+                console.error("One or both references not found.");
                 alert("One or both references not found.");
             }
         }
