@@ -14,23 +14,21 @@
             displayMessage("Fetching references from URL...");
             const urlParams = new URLSearchParams(window.location.search);
             const transactionReference = urlParams.get('trxref');
-            let bookingReferencesString = urlParams.get('bookingReference'); // Fix: Correct parameter name
+            let bookingReferencesString = urlParams.get('bookingReference'); // FIXED parameter name
 
             console.log("Raw transactionReference:", transactionReference);
             console.log("Raw bookingReferencesString:", bookingReferencesString);
 
             if (bookingReferencesString) {
                 try {
-                    // Decode the string
+                    // Decode and ensure JSON format
                     bookingReferencesString = decodeURIComponent(bookingReferencesString);
                     console.log("Decoded bookingReferencesString:", bookingReferencesString);
 
-                    // Ensure it is in JSON format by adding square brackets if missing
                     if (!bookingReferencesString.startsWith("[") && !bookingReferencesString.endsWith("]")) {
                         bookingReferencesString = "[" + bookingReferencesString + "]";
                     }
 
-                    // Parse it as JSON
                     const bookingReferences = JSON.parse(bookingReferencesString);
                     console.log("Parsed bookingReferences:", bookingReferences);
 
@@ -69,4 +67,5 @@
 
         redirectToDeepLink();
     </script>
-</body
+</body>
+</html>
