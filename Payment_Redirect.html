@@ -38,7 +38,7 @@
 
             if (references && references.transactionReference && references.bookingReferences && Array.isArray(references.bookingReferences)) {
                 const encodedBookingReferences = encodeURIComponent(JSON.stringify(references.bookingReferences));
-                const deepLink = `shubbleapp://shubbleapp.com/paymentconfirmationRecurring?transactionReference=${encodeURIComponent(references.transactionReference)}&bookingReference=${encodedBookingReferences}`; // Changed to bookingReference
+                const deepLink = `shubbleapp://shubbleapp.com/paymentconfirmationRecurring/?transactionReference=${encodeURIComponent(references.transactionReference)}&bookingReference=${encodedBookingReferences}`; // Changed to bookingReference
                 displayMessage("Redirecting to deep link: " + deepLink);
                 window.location.href = deepLink;
             } else {
