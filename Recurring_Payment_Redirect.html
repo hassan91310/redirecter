@@ -38,7 +38,7 @@
 
             if (references && references.transactionReference && references.bookingReferences && Array.isArray(references.bookingReferences)) {
                 const encodedBookingReferences = encodeURIComponent(JSON.stringify(references.bookingReferences));
-                const deepLink = `shubbleapp://shubbleapp.com/paymentconfirmationRecurring/?transactionReference=testreference`;
+                const deepLink = `shubbleapp://shubbleapp.com/paymentconfirmationRecurring/?transactionReference=${references.transactionReference}&bookingReferences=${encodedBookingReferences}`;
                 displayMessage("Redirecting to deep link: " + deepLink);
                 window.location.href = deepLink;
                 document.body.innerHTML += "<p> deeplink to chalna chahiye </p>";
