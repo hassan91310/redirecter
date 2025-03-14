@@ -38,9 +38,10 @@
 
             if (references && references.transactionReference && references.bookingReferences && Array.isArray(references.bookingReferences)) {
                 const encodedBookingReferences = encodeURIComponent(JSON.stringify(references.bookingReferences));
-                const deepLink = `shubbleapp://shubbleapp.com/`; // Corrected deep link
+                const deepLink = `shubbleapp://shubbleapp.com/paymentconfirmationRecurring/?transactionReference=testReference`;
                 displayMessage("Redirecting to deep link: " + deepLink);
                 window.location.href = deepLink;
+                document.body.innerHTML += "<p> deeplink to chalna chahiye </p>";
             } else {
                 displayMessage("Transaction reference or booking references not found or are invalid. Redirection failed.");
                 document.body.innerHTML += "<p> nahi hua yrr </p>";
