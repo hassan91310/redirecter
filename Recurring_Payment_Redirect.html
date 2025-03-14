@@ -18,7 +18,6 @@
 
             let bookingReferencesString = urlParams.get('bookingReference');
 
-            // Fallback: Extract bookingReference manually using regex if URLSearchParams fails
             if (!bookingReferencesString) {
                 console.warn("⚠️ bookingReference not found via URLSearchParams. Trying regex...");
                 const match = window.location.search.match(/bookingReference=([^&]+)/);
@@ -34,10 +33,8 @@
             if (bookingReferencesString) {
                 try {
                     bookingReferencesString = decodeURIComponent(bookingReferencesString);
-                    console.log("🔹 Decoded bookingReferencesString:", bookingReferencesString);
 
-                    // Ensure JSON format (sometimes brackets get stripped)
-                    if (!bookingReferencesString.startsWith("[") && !bookingReferencesString.endsWith("]")) {
+                    if (!bookingReferencesString.startsWith("[") || !bookingReferencesString.endsWith("]")) {
                         bookingReferencesString = "[" + bookingReferencesString + "]";
                         console.log("🔹 Fixed JSON format:", bookingReferencesString);
                     }
