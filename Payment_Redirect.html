@@ -4,7 +4,8 @@
     <title>Recurring_Payment_Redirect</title>
 </head>
 <body>
-    <div id="statusMessage"></div>
+    <div id="statusMessage">Redirecting...</div>
+    
     <script>
         function displayMessage(message) {
             document.getElementById('statusMessage').textContent = message;
@@ -14,7 +15,7 @@
             displayMessage("Fetching references from URL...");
             const urlParams = new URLSearchParams(window.location.search);
             const transactionReference = urlParams.get('trxref');
-            const bookingReferencesString = urlParams.get('bookingReferences');
+            const bookingReferencesString = urlParams.get('bookingReference'); // Fixed parameter name
 
             if (bookingReferencesString) {
                 try {
@@ -38,18 +39,16 @@
 
             if (references && references.transactionReference && references.bookingReferences && Array.isArray(references.bookingReferences)) {
                 const encodedBookingReferences = encodeURIComponent(JSON.stringify(references.bookingReferences));
-                const deepLink = "shubbleapp://shubbleapp.com/paymentconfirmationRecurring/?" +
-                     "transactionReference=" ${encodeURIComponent(references.transactionReference)} + 
-                     "&bookingReference=" + ${encodedBookingReferences}; // Changed to bookingReference
-                displayMessage("Redirecting to deep link: " + deepLink);
+                const deepLink = `shubbleapp://shubbleapp.com/paymentconfirmationRecurring/?transactionReference=${encodeURIComponent(references.transactionReference)}&bookingReference=${encodedBookingReferences}`;
+
+                displayMessage("Redirecting to deep link...");
                 window.location.href = deepLink;
             } else {
                 displayMessage("Transaction reference or booking references not found or are invalid. Redirection failed.");
-                document.body.innerHTML += "<p> nahi hua yrr </p>";
+                document.body.innerHTML += "<p>nahi hua yrr</p>";
             }
         }
 
-        <p> "redirecting...." </p>
         redirectToDeepLink();
     </script>
 </body>
