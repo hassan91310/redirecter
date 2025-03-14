@@ -14,11 +14,20 @@
             displayMessage("Fetching references from URL...");
             const urlParams = new URLSearchParams(window.location.search);
             const transactionReference = urlParams.get('trxref');
-            const bookingReferencesString = urlParams.get('bookingReferences');
+            let bookingReferencesString = urlParams.get('bookingReferences');
 
             if (bookingReferencesString) {
                 try {
-                    const bookingReferences = JSON.parse(decodeURIComponent(bookingReferencesString));
+                    // Decode the string
+                    bookingReferencesString = decodeURIComponent(bookingReferencesString);
+                    
+                    // Ensure it is in JSON format by adding square brackets if missing
+                    if (!bookingReferencesString.startsWith("[")) {
+                        bookingReferencesString = "[" + bookingReferencesString + "]";
+                    }
+
+                    // Parse it as JSON
+                    const bookingReferences = JSON.parse(bookingReferencesString);
                     displayMessage("References fetched successfully.");
                     return { transactionReference, bookingReferences };
                 } catch (error) {
@@ -41,12 +50,13 @@
                 const deepLink = `shubbleapp://shubbleapp.com/paymentconfirmationRecurring/?transactionReference=${references.transactionReference}&bookingReferences=${encodedBookingReferences}`;
                 displayMessage("Redirecting to deep link: " + deepLink);
                 window.location.href = deepLink;
-                document.body.innerHTML += "<p> deeplink to chalna chahiye </p>";
+                document.body.innerHTML += "<p>Deeplink should work now.</p>";
             } else {
                 displayMessage("Transaction reference or booking references not found or are invalid. Redirection failed.");
-                document.body.innerHTML += "<p> nahi hua yrr </p>";
+                document.body.innerHTML += "<p>Redirection failed.</p>";
             }
         }
+        
         redirectToDeepLink();
     </script>
 </body>
