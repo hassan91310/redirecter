@@ -64,7 +64,7 @@
 
             if (references && references.transactionReference && references.bookingReferences && Array.isArray(references.bookingReferences)) {
                 const encodedBookingReferences = encodeURIComponent(JSON.stringify(references.bookingReferences));
-                const deepLink = `shubbleapp://shubbleapp.com/paymentconfirmationRecurring/?transactionReference=${references.transactionReference}&bookingReferences=${encodedBookingReferences}`;
+                const deepLink = `shubbleapp://shubbleapp.com/paymentconfirmationRecurring/?transactionReference=${references.transactionReference}&bookingReference=${encodedBookingReferences}`;
 
                 console.log("🚀 Final deep link:", deepLink);
 
