@@ -1,1 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Child Booking Redirect</title>
+</head>
+<body>
+    <script>
+        function getReferences() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const childRef = urlParams.get('childRef');
+            const bookingRef = urlParams.get('bookingRef');
+            return { childRef, bookingRef };
+        }
+
+        function redirectToDeepLink() {
+            const { childRef, bookingRef } = getReferences();
+
+            if (childRef && bookingRef) {
+                const deepLink = `shubbleapp://shubbleapp.com/childBookingRequestRecurring/?childRef=${encodeURIComponent(childRef)}&bookingRef=${encodeURIComponent(bookingRef)}`;
+                console.log("Redirecting to:", deepLink);
+                window.location.href = deepLink;
+            } else {
+                console.error("Missing childRef or bookingRef.");
+                alert("Missing childRef or bookingRef.");
+            }
+        }
+
+        redirectToDeepLink();
+    </script>
+</body>
+</html>
 
