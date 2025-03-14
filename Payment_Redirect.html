@@ -1,28 +1,53 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Payment Redirect</title>
+    <title>Recurring_Payment_Redirect</title>
 </head>
 <body>
+    <div id="statusMessage"></div>
     <script>
-        function getReferences() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const transactionReference = urlParams.get('reference'); // Original 'reference' now used as transactionReference
-            const bookingReference = urlParams.get('bookingReference');
-            return { transactionReference, bookingReference };
+        function displayMessage(message) {
+            document.getElementById('statusMessage').textContent = message;
         }
 
-        function redirectToDeepLink() {
-            const { transactionReference, bookingReference } = getReferences();
+        function getReferences() {
+            displayMessage("Fetching references from URL...");
+            const urlParams = new URLSearchParams(window.location.search);
+            const transactionReference = urlParams.get('trxref');
+            const bookingReferencesString = urlParams.get('bookingReferences');
 
-            if (transactionReference && bookingReference) {
-                const deepLink = `shubbleapp://shubbleapp.com/paymentconfirmation?transactionReference=${encodeURIComponent(transactionReference)}&bookingReference=${encodeURIComponent(bookingReference)}`;
-                window.location.href = deepLink;
+            if (bookingReferencesString) {
+                try {
+                    const bookingReferences = JSON.parse(decodeURIComponent(bookingReferencesString));
+                    displayMessage("References fetched successfully.");
+                    return { transactionReference, bookingReferences };
+                } catch (error) {
+                    console.error('Error parsing booking references:', error);
+                    displayMessage("Error parsing booking references.");
+                    return null;
+                }
             } else {
-                alert("One or both references not found.");
+                displayMessage("Booking references not found in URL.");
+                return null;
             }
         }
 
+        function redirectToDeepLink() {
+            displayMessage("Starting redirection process...");
+            const references = getReferences();
+
+            if (references && references.transactionReference && references.bookingReferences && Array.isArray(references.bookingReferences)) {
+                const encodedBookingReferences = encodeURIComponent(JSON.stringify(references.bookingReferences));
+                const deepLink = `shubbleapp://shubbleapp.com/paymentconfirmationRecurring?transactionReference=${encodeURIComponent(references.transactionReference)}&bookingReference=${encodedBookingReferences}`; // Changed to bookingReference
+                displayMessage("Redirecting to deep link: " + deepLink);
+                window.location.href = deepLink;
+            } else {
+                displayMessage("Transaction reference or booking references not found or are invalid. Redirection failed.");
+                document.body.innerHTML += "<p> nahi hua yrr </p>";
+            }
+        }
+
+        <p> "redirecting...." </p>
         redirectToDeepLink();
     </script>
 </body>
