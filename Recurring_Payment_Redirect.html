@@ -28,7 +28,7 @@
 
             if (transactionReference && bookingReferences && Array.isArray(bookingReferences)) {
                 const encodedBookingReferences = encodeURIComponent(JSON.stringify(bookingReferences));
-                const deepLink = `shubbleapp://shubbleapp.com/paymentconfirmation?transactionReference=${encodeURIComponent(transactionReference)}&bookingReferences=${encodedBookingReferences}`;
+                const deepLink = `shubbleapp://shubbleapp.com/paymentconfirmationRecurring?transactionReference=${encodeURIComponent(transactionReference)}&bookingReference=${encodedBookingReferences}`;
                 window.location.href = deepLink;
             } else {
                 alert("Transaction reference or booking references not found or are invalid.");
