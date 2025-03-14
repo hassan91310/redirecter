@@ -8,39 +8,42 @@
     <script>
         function displayMessage(message) {
             document.getElementById('statusMessage').textContent = message;
+            console.log(message);
         }
 
         function getReferences() {
             displayMessage("Fetching references from URL...");
             const urlParams = new URLSearchParams(window.location.search);
             const transactionReference = urlParams.get('trxref');
-            let bookingReferencesString = urlParams.get('bookingReference'); // FIXED parameter name
+            let bookingReferencesString = urlParams.get('bookingReference'); // Ensure correct parameter name
 
-            console.log("Raw transactionReference:", transactionReference);
-            console.log("Raw bookingReferencesString:", bookingReferencesString);
+            console.log("🔹 Raw transactionReference:", transactionReference);
+            console.log("🔹 Raw bookingReferencesString:", bookingReferencesString);
 
             if (bookingReferencesString) {
                 try {
-                    // Decode and ensure JSON format
+                    // Ensure correct decoding
                     bookingReferencesString = decodeURIComponent(bookingReferencesString);
-                    console.log("Decoded bookingReferencesString:", bookingReferencesString);
+                    console.log("🔹 Decoded bookingReferencesString:", bookingReferencesString);
 
+                    // Ensure JSON format (sometimes brackets get lost)
                     if (!bookingReferencesString.startsWith("[") && !bookingReferencesString.endsWith("]")) {
                         bookingReferencesString = "[" + bookingReferencesString + "]";
+                        console.log("🔹 Fixed JSON format:", bookingReferencesString);
                     }
 
                     const bookingReferences = JSON.parse(bookingReferencesString);
-                    console.log("Parsed bookingReferences:", bookingReferences);
+                    console.log("✅ Parsed bookingReferences:", bookingReferences);
 
                     displayMessage("References fetched successfully.");
                     return { transactionReference, bookingReferences };
                 } catch (error) {
-                    console.error('Error parsing booking references:', error);
+                    console.error('❌ Error parsing booking references:', error);
                     displayMessage("Error parsing booking references.");
                     return null;
                 }
             } else {
-                displayMessage("Booking references not found in URL.");
+                displayMessage("❌ Booking references not found in URL.");
                 return null;
             }
         }
@@ -53,14 +56,14 @@
                 const encodedBookingReferences = encodeURIComponent(JSON.stringify(references.bookingReferences));
                 const deepLink = `shubbleapp://shubbleapp.com/paymentconfirmationRecurring/?transactionReference=${references.transactionReference}&bookingReferences=${encodedBookingReferences}`;
 
-                console.log("Final deep link:", deepLink);
+                console.log("🚀 Final deep link:", deepLink);
 
                 displayMessage("Redirecting to deep link: " + deepLink);
                 window.location.href = deepLink;
                 document.body.innerHTML += "<p>Deeplink should work now.</p>";
             } else {
-                displayMessage("Transaction reference or booking references not found or are invalid. Redirection failed.");
-                console.log("Redirection failed due to missing or invalid parameters.");
+                displayMessage("❌ Transaction reference or booking references not found or are invalid. Redirection failed.");
+                console.log("❌ Redirection failed due to missing or invalid parameters.");
                 document.body.innerHTML += "<p>Redirection failed.</p>";
             }
         }
