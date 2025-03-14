@@ -14,7 +14,7 @@
             displayMessage("Fetching references from URL...");
             const urlParams = new URLSearchParams(window.location.search);
             const transactionReference = urlParams.get('trxref');
-            let bookingReferencesString = urlParams.get('bookingReferences');
+            let bookingReferencesString = urlParams.get('bookingReference'); // Fix: Correct parameter name
 
             console.log("Raw transactionReference:", transactionReference);
             console.log("Raw bookingReferencesString:", bookingReferencesString);
@@ -69,5 +69,4 @@
 
         redirectToDeepLink();
     </script>
-</body>
-</html>
+</body
