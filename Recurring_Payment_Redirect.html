@@ -13,7 +13,7 @@
         function getReferences() {
             displayMessage("Fetching references from URL...");
             const urlParams = new URLSearchParams(window.location.search);
-            const transactionReference = urlParams.get('reference');
+            const transactionReference = urlParams.get('trxref');
             const bookingReferencesString = urlParams.get('bookingReferences');
 
             if (bookingReferencesString) {
@@ -38,7 +38,7 @@
 
             if (references && references.transactionReference && references.bookingReferences && Array.isArray(references.bookingReferences)) {
                 const encodedBookingReferences = encodeURIComponent(JSON.stringify(references.bookingReferences));
-                const deepLink = `shubbleapp://shubbleapp.com/paymentconfirmationRecurring?transactionReference=${encodeURIComponent(references.transactionReference)}&bookingReferences=${encodedBookingReferences}`;
+                const deepLink = `shubbleapp://shubbleapp.com/paymentconfirmationRecurring/?transactionReference=${encodeURIComponent(references.transactionReference)}&bookingReference=${encodedBookingReferences}`; // Corrected deep link
                 displayMessage("Redirecting to deep link: " + deepLink);
                 window.location.href = deepLink;
             } else {
