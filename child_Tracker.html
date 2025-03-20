@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrackTheChild</title>
+    <script>
+        function redirectToApp() {
+            // Get query parameters from the URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const destination = encodeURIComponent(urlParams.get('destination') || '');
+            const waypoints = encodeURIComponent(urlParams.get('waypoints') || '');
+            const booking = encodeURIComponent(urlParams.get('booking') || '');
+
+            // Construct the deep link
+            const deepLink = `shubbleapp://shubbleapp.com/childRealtimeTracking?destination=${destination}&waypoints=${waypoints}&booking=${booking}`;
+
+            // Redirect to the app
+            window.location.href = deepLink;
+
+            // Fallback message if the redirect fails
+            setTimeout(() => {
+                document.getElementById("fallback").style.display = "block";
+            }, 3000);
+        }
+    </script>
+</head>
+<body onload="redirectToApp()">
+    <h2>Redirecting to Shubble App...</h2>
+    <p>If you are not redirected, <a href="#" onclick="redirectToApp()">click here</a>.</p>
+    <div id="fallback" style="display: none;">
+        <p>Couldn't open the Shubble App? Please make sure it's installed.</p>
+        <a href="https://your-app-download-link.com">Download Shubble</a>
+    </div>
+</body>
+</html>
