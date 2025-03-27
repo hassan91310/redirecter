@@ -14,6 +14,106 @@
         function getReferences() {
             displayMessage("Fetching references from URL...");
             const urlParams = new URLSearchParams(window.location.search);
+            
+            const transactionReference = urlParams.get('trxref');
+            let bookingReferencesString = urlParams.get('bookingReference');
+
+            // New parameters (nullable)
+            const promoInUserPromoFound = urlParams.get('promoInUserPromoFound') === "true"; // Boolean
+            const promoUsed = urlParams.get('promoUsed') === "true"; // Boolean
+            const userPromoReference = urlParams.get('userPromoReference') || null;
+            const promoCodeReference = urlParams.get('promoCodeReference') || null;
+
+            if (!bookingReferencesString) {
+                console.warn("⚠️ bookingReference not found via URLSearchParams. Trying regex...");
+                const match = window.location.search.match(/bookingReference=([^&]+)/);
+                if (match) {
+                    bookingReferencesString = decodeURIComponent(match[1]);
+                    console.log("🔹 Extracted via regex:", bookingReferencesString);
+                }
+            }
+
+            console.log("🔹 Raw transactionReference:", transactionReference);
+            console.log("🔹 Raw bookingReferencesString:", bookingReferencesString);
+            console.log("🔹 promoInUserPromoFound:", promoInUserPromoFound);
+            console.log("🔹 promoUsed:", promoUsed);
+            console.log("🔹 userPromoReference:", userPromoReference);
+            console.log("🔹 promoCodeReference:", promoCodeReference);
+
+            if (bookingReferencesString) {
+                try {
+                    bookingReferencesString = decodeURIComponent(bookingReferencesString);
+
+                    if (!bookingReferencesString.startsWith("[") || !bookingReferencesString.endsWith("]")) {
+                        bookingReferencesString = "[" + bookingReferencesString + "]";
+                        console.log("🔹 Fixed JSON format:", bookingReferencesString);
+                    }
+
+                    const bookingReferences = JSON.parse(bookingReferencesString);
+                    console.log("✅ Parsed bookingReferences:", bookingReferences);
+
+                    displayMessage("References fetched successfully.");
+                    return { 
+                        transactionReference, 
+                        bookingReferences, 
+                        promoInUserPromoFound, 
+                        promoUsed, 
+                        userPromoReference, 
+                        promoCodeReference 
+                    };
+                } catch (error) {
+                    console.error('❌ Error parsing booking references:', error);
+                    displayMessage("Error parsing booking references.");
+                    return null;
+                }
+            } else {
+                displayMessage("❌ Booking references not found in URL.");
+                return null;
+            }
+        }
+
+        function redirectToDeepLink() {
+            displayMessage("Starting redirection process...");
+            const references = getReferences();
+
+            if (references && references.transactionReference && references.bookingReferences && Array.isArray(references.bookingReferences)) {
+                const encodedBookingReferences = encodeURIComponent(JSON.stringify(references.bookingReferences));
+                const deepLink = `shubbleapp://shubbleapp.com/paymentconfirmationRecurring/?transactionReference=${references.transactionReference}&bookingReference=${encodedBookingReferences}&promoInUserPromoFound=${references.promoInUserPromoFound}&promoUsed=${references.promoUsed}&userPromoReference=${references.userPromoReference}&promoCodeReference=${references.promoCodeReference}`;
+
+                console.log("🚀 Final deep link:", deepLink);
+
+                displayMessage("Redirecting to deep link: " + deepLink);
+                window.location.href = deepLink;
+                document.body.innerHTML += "<p>Deeplink should work now.</p>";
+            } else {
+                displayMessage("❌ Transaction reference or booking references not found or are invalid. Redirection failed.");
+                console.log("❌ Redirection failed due to missing or invalid parameters.");
+                document.body.innerHTML += "<p>Redirection failed.</p>";
+            }
+        }
+
+        redirectToDeepLink();
+    </script>
+</body>
+</html>
+
+
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Recurring_Payment_Redirect</title>
+</head>
+<body>
+    <div id="statusMessage"></div>
+    <script>
+        function displayMessage(message) {
+            document.getElementById('statusMessage').textContent = message;
+            console.log(message);
+        }
+
+        function getReferences() {
+            displayMessage("Fetching references from URL...");
+            const urlParams = new URLSearchParams(window.location.search);
             const transactionReference = urlParams.get('trxref');
 
             let bookingReferencesString = urlParams.get('bookingReference');
@@ -79,3 +179,4 @@
     </script>
 </body>
 </html>
+ -->
