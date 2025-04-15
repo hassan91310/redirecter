@@ -12,12 +12,11 @@
             const transactionReference = urlParams.get('reference'); 
             const bookingReference = urlParams.get('bookingReference');
 
-            const promoInUserPromoFound = urlParams.get('promoInUserPromoFound') === "true"; 
-            const promoUsed = urlParams.get('promoUsed') === "true"; 
+            // New parameters (nullable)
+            const promoInUserPromoFound = urlParams.get('promoInUserPromoFound') === "true"; // Boolean
+            const promoUsed = urlParams.get('promoUsed') === "true"; // Boolean
             const userPromoReference = urlParams.get('userPromoReference') || null;
             const promoCodeReference = urlParams.get('promoCodeReference') || null;
-
-            const voucherChanges = urlParams.get('voucherChanges'); // optional (can be null)
 
             console.log("Transaction Reference:", transactionReference);
             console.log("Booking Reference:", bookingReference);
@@ -25,7 +24,6 @@
             console.log("Promo Used:", promoUsed);
             console.log("User Promo Reference:", userPromoReference);
             console.log("Promo Code Reference:", promoCodeReference);
-            console.log("Voucher Changes:", voucherChanges);
 
             return { 
                 transactionReference, 
@@ -33,26 +31,15 @@
                 promoInUserPromoFound, 
                 promoUsed, 
                 userPromoReference, 
-                promoCodeReference,
-                voucherChanges
+                promoCodeReference 
             };
         }
 
         function redirectToDeepLink() {
-            const { transactionReference, bookingReference, promoInUserPromoFound, promoUsed, userPromoReference, promoCodeReference, voucherChanges } = getReferences();
+            const { transactionReference, bookingReference, promoInUserPromoFound, promoUsed, userPromoReference, promoCodeReference } = getReferences();
 
             if (transactionReference && bookingReference) {
-                let deepLink = `shubbleapp://shubbleapp.com/paymentconfirmation` +
-                    `?transactionReference=${encodeURIComponent(transactionReference)}` +
-                    `&bookingReference=${encodeURIComponent(bookingReference)}` +
-                    `&promoInUserPromoFound=${promoInUserPromoFound}` +
-                    `&promoUsed=${promoUsed}` +
-                    `&userPromoReference=${encodeURIComponent(userPromoReference || '')}` +
-                    `&promoCodeReference=${encodeURIComponent(promoCodeReference || '')}`;
-
-                if (voucherChanges) {
-                    deepLink += `&voucherChanges=${encodeURIComponent(voucherChanges)}`;
-                }
+                const deepLink = `shubbleapp://shubbleapp.com/paymentconfirmation?transactionReference=${encodeURIComponent(transactionReference)}&bookingReference=${encodeURIComponent(bookingReference)}&promoInUserPromoFound=${promoInUserPromoFound}&promoUsed=${promoUsed}&userPromoReference=${encodeURIComponent(userPromoReference || '')}&promoCodeReference=${encodeURIComponent(promoCodeReference || '')}`;
 
                 console.log("Redirecting to:", deepLink);
                 window.location.href = deepLink;
