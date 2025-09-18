@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment Redirect</title>
+</head>
+<body>
+    <script>
+        function getReferences() {
+            const urlParams = new URLSearchParams(window.location.search);
+            console.log("Raw URL Params:", urlParams.toString());
+
+            const transactionReference = urlParams.get('reference'); 
+            const bookingReference = urlParams.get('bookingReference');
+
+            // Existing optional parameters
+            const promoInUserPromoFound = urlParams.get('promoInUserPromoFound') === "true";
+            const promoUsed = urlParams.get('promoUsed') === "true";
+            const userPromoReference = urlParams.get('userPromoReference') || null;
+            const promoCodeReference = urlParams.get('promoCodeReference') || null;
+
+            // New optional parameter
+            const voucherChange = urlParams.get('voucherChange') || null;
+
+            console.log("Transaction Reference:", transactionReference);
+            console.log("Booking Reference:", bookingReference);
+            console.log("Promo In User Promo Found:", promoInUserPromoFound);
+            console.log("Promo Used:", promoUsed);
+            console.log("User Promo Reference:", userPromoReference);
+            console.log("Promo Code Reference:", promoCodeReference);
+            console.log("Voucher Change:", voucherChange);
+
+            return { 
+                transactionReference, 
+                bookingReference, 
+                promoInUserPromoFound, 
+                promoUsed, 
+                userPromoReference, 
+                promoCodeReference,
+                voucherChange
+            };
+        }
+
+        function redirectToDeepLink() {
+            const { 
+                transactionReference, 
+                bookingReference, 
+                promoInUserPromoFound, 
+                promoUsed, 
+                userPromoReference, 
+                promoCodeReference,
+                voucherChange
+            } = getReferences();
+
+            if (transactionReference && bookingReference) {
+                const deepLink = `shubbleapp://shubbleapp.com/paymentconfirmation?transactionReference=${encodeURIComponent(transactionReference)}&bookingReference=${encodeURIComponent(bookingReference)}&promoInUserPromoFound=${promoInUserPromoFound}&promoUsed=${promoUsed}&userPromoReference=${encodeURIComponent(userPromoReference || '')}&promoCodeReference=${encodeURIComponent(promoCodeReference || '')}&voucherChange=${encodeURIComponent(voucherChange || '')}`;
+
+                console.log("Redirecting to:", deepLink);
+                window.location.href = deepLink;
+            } else {
+                console.error("One or both references not found.");
+                alert("One or both references not found.");
+            }
+        }
+
+        redirectToDeepLink();
+    </script>
+</body>
+</html>
+
+
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Payment Redirect</title>
+</head>
+<body>
+    <script>
+        function getReferences() {
+            const urlParams = new URLSearchParams(window.location.search);
+            console.log("Raw URL Params:", urlParams.toString());
+
+            const transactionReference = urlParams.get('reference'); 
+            const bookingReference = urlParams.get('bookingReference');
+
+            // New parameters (nullable)
+            const promoInUserPromoFound = urlParams.get('promoInUserPromoFound') === "true"; // Boolean
+            const promoUsed = urlParams.get('promoUsed') === "true"; // Boolean
+            const userPromoReference = urlParams.get('userPromoReference') || null;
+            const promoCodeReference = urlParams.get('promoCodeReference') || null;
+
+            console.log("Transaction Reference:", transactionReference);
+            console.log("Booking Reference:", bookingReference);
+            console.log("Promo In User Promo Found:", promoInUserPromoFound);
+            console.log("Promo Used:", promoUsed);
+            console.log("User Promo Reference:", userPromoReference);
+            console.log("Promo Code Reference:", promoCodeReference);
+
+            return { 
+                transactionReference, 
+                bookingReference, 
+                promoInUserPromoFound, 
+                promoUsed, 
+                userPromoReference, 
+                promoCodeReference 
+            };
+        }
+
+        function redirectToDeepLink() {
+            const { transactionReference, bookingReference, promoInUserPromoFound, promoUsed, userPromoReference, promoCodeReference } = getReferences();
+
+            if (transactionReference && bookingReference) {
+                const deepLink = `shubbleapp://shubbleapp.com/paymentconfirmation?transactionReference=${encodeURIComponent(transactionReference)}&bookingReference=${encodeURIComponent(bookingReference)}&promoInUserPromoFound=${promoInUserPromoFound}&promoUsed=${promoUsed}&userPromoReference=${encodeURIComponent(userPromoReference || '')}&promoCodeReference=${encodeURIComponent(promoCodeReference || '')}`;
+
+                console.log("Redirecting to:", deepLink);
+                window.location.href = deepLink;
+            } else {
+                console.error("One or both references not found.");
+                alert("One or both references not found.");
+            }
+        }
+
+        redirectToDeepLink();
+    </script>
+</body>
+</html> -->
+
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Payment Redirect</title>
+</head>
+<body>
+    <script>
+        function getReferences() {
+            const urlParams = new URLSearchParams(window.location.search);
+            console.log("Raw URL Params:", urlParams.toString());
+
+            const transactionReference = urlParams.get('reference'); 
+            const bookingReference = urlParams.get('bookingReference');
+
+            // New parameters (nullable)
+            const promoInUserPromoFound = urlParams.get('promoInUserPromoFound') === "true"; // Boolean
+            const promoUsed = urlParams.get('promoUsed') === "true"; // Boolean
+            const userPromoReference = urlParams.get('userPromoReference') || null;
+            const promoCodeReference = urlParams.get('promoCodeReference') || null;
+
+            console.log("Transaction Reference:", transactionReference);
+            console.log("Booking Reference:", bookingReference);
+            console.log("Promo In User Promo Found:", promoInUserPromoFound);
+            console.log("Promo Used:", promoUsed);
+            console.log("User Promo Reference:", userPromoReference);
+            console.log("Promo Code Reference:", promoCodeReference);
+
+            return { 
+                transactionReference, 
+                bookingReference, 
+                promoInUserPromoFound, 
+                promoUsed, 
+                userPromoReference, 
+                promoCodeReference 
+            };
+        }
+
+        function redirectToDeepLink() {
+            const { transactionReference, bookingReference, promoInUserPromoFound, promoUsed, userPromoReference, promoCodeReference } = getReferences();
+
+            if (transactionReference && bookingReference) {
+                const deepLink = `shubbleapp://shubbleapp.com/paymentconfirmation?transactionReference=${encodeURIComponent(transactionReference)}&bookingReference=${encodeURIComponent(bookingReference)}&promoInUserPromoFound=${promoInUserPromoFound}&promoUsed=${promoUsed}&userPromoReference=${encodeURIComponent(userPromoReference || '')}&promoCodeReference=${encodeURIComponent(promoCodeReference || '')}`;
+
+                console.log("Redirecting to:", deepLink);
+                window.location.href = deepLink;
+            } else {
+                console.error("One or both references not found.");
+                alert("One or both references not found.");
+            }
+        }
+
+        redirectToDeepLink();
+    </script>
+</body>
+</html> -->
+
+
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Payment Redirect</title>
+</head>
+<body>
+    <script>
+        function getReferences() {
+            const urlParams = new URLSearchParams(window.location.search);
+            console.log("Raw URL Params:", urlParams.toString());
+            const transactionReference = urlParams.get('reference'); 
+            const bookingReference = urlParams.get('bookingReference');
+            console.log("Transaction Reference:", transactionReference);
+            console.log("Booking Reference:", bookingReference);
+            return { transactionReference, bookingReference };
+        }
+
+        function redirectToDeepLink() {
+            const { transactionReference, bookingReference } = getReferences();
+
+            if (transactionReference && bookingReference) {
+                const deepLink = `shubbleapp://shubbleapp.com/paymentconfirmation?transactionReference=${encodeURIComponent(transactionReference)}&bookingReference=${encodeURIComponent(bookingReference)}`;
+                console.log("Redirecting to:", deepLink);
+                window.location.href = deepLink;
+            } else {
+                console.error("One or both references not found.");
+                alert("One or both references not found.");
+            }
+        }
+
+        redirectToDeepLink();
+    </script>
+</body>
+</html>
+ -->
