@@ -52,7 +52,7 @@
             } = getReferences();
 // if (transactionReference && bookingReference) {
             if (transactionReference) {
-                const deepLink = `bizella://bizella.com.com/paymentconfirmation?transactionReference=${encodeURIComponent(transactionReference)}&bookingReference=${encodeURIComponent(bookingReference)}&promoInUserPromoFound=${promoInUserPromoFound}&promoUsed=${promoUsed}&userPromoReference=${encodeURIComponent(userPromoReference || '')}&promoCodeReference=${encodeURIComponent(promoCodeReference || '')}&voucherChange=${encodeURIComponent(voucherChange || '')}`;
+                const deepLink = `bizella://bizella.com/paymentconfirmation?transactionReference=${encodeURIComponent(transactionReference)}&bookingReference=${encodeURIComponent(bookingReference)}&promoInUserPromoFound=${promoInUserPromoFound}&promoUsed=${promoUsed}&userPromoReference=${encodeURIComponent(userPromoReference || '')}&promoCodeReference=${encodeURIComponent(promoCodeReference || '')}&voucherChange=${encodeURIComponent(voucherChange || '')}`;
 
                 console.log("Redirecting to:", deepLink);
                 window.location.href = deepLink;
