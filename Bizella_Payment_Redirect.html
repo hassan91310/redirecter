@@ -69,7 +69,19 @@
                 const deepLink = `bizella://bizella.com/customerBookingConfirmedOage?transactionReference=${encodeURIComponent(transactionReference)}&bookingReference=${encodeURIComponent(bookingReference || '')}&promoInUserPromoFound=${promoInUserPromoFound}&promoUsed=${promoUsed}&userPromoReference=${encodeURIComponent(userPromoReference || '')}&promoCodeReference=${encodeURIComponent(promoCodeReference || '')}&voucherChange=${encodeURIComponent(voucherChange || '')}&bizcoinUsed=${bizcoinUsed}&paymentFor=${encodeURIComponent(paymentFor || '')}&addon=${encodeURIComponent(addon || '')}`;
 
                 console.log("Redirecting to:", deepLink);
-                window.location.href = deepLink;
+
+                const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+                if (isIOS) {
+                    // ✅ iOS workaround: use hidden iframe
+                    const iframe = document.createElement("iframe");
+                    iframe.style.display = "none";
+                    iframe.src = deepLink;
+                    document.body.appendChild(iframe);
+                } else {
+                    // ✅ Android + others (keep current behavior)
+                    window.location.href = deepLink;
+                }
             } else {
                 console.error("One or both references not found.");
                 alert("One or both references not found.");
@@ -103,8 +115,12 @@
             const promoCodeReference = urlParams.get('promoCodeReference') || null;
             const voucherChange = urlParams.get('voucherChange') || null;
 
-            // ✅ New parameter for BizCoins used
+            // ✅ BizCoins used
             const bizcoinUsed = parseFloat(urlParams.get('bizcoinUsed')) || 0.0;
+
+            // ✅ New parameters
+            const paymentFor = urlParams.get('paymentFor') || null;
+            const addon = urlParams.get('addon') || null;
 
             console.log("Transaction Reference:", transactionReference);
             console.log("Booking Reference:", bookingReference);
@@ -114,6 +130,8 @@
             console.log("Promo Code Reference:", promoCodeReference);
             console.log("Voucher Change:", voucherChange);
             console.log("BizCoin Used:", bizcoinUsed);
+            console.log("Payment For:", paymentFor);
+            console.log("Addon:", addon);
 
             return { 
                 transactionReference, 
@@ -123,7 +141,9 @@
                 userPromoReference, 
                 promoCodeReference,
                 voucherChange,
-                bizcoinUsed
+                bizcoinUsed,
+                paymentFor,
+                addon
             };
         }
 
@@ -136,11 +156,13 @@
                 userPromoReference, 
                 promoCodeReference,
                 voucherChange,
-                bizcoinUsed
+                bizcoinUsed,
+                paymentFor,
+                addon
             } = getReferences();
 
             if (transactionReference) {
-                const deepLink = `bizella://bizella.com/customerBookingConfirmedOage?transactionReference=${encodeURIComponent(transactionReference)}&bookingReference=${encodeURIComponent(bookingReference || '')}&promoInUserPromoFound=${promoInUserPromoFound}&promoUsed=${promoUsed}&userPromoReference=${encodeURIComponent(userPromoReference || '')}&promoCodeReference=${encodeURIComponent(promoCodeReference || '')}&voucherChange=${encodeURIComponent(voucherChange || '')}&bizcoinUsed=${bizcoinUsed}`;
+                const deepLink = `bizella://bizella.com/customerBookingConfirmedOage?transactionReference=${encodeURIComponent(transactionReference)}&bookingReference=${encodeURIComponent(bookingReference || '')}&promoInUserPromoFound=${promoInUserPromoFound}&promoUsed=${promoUsed}&userPromoReference=${encodeURIComponent(userPromoReference || '')}&promoCodeReference=${encodeURIComponent(promoCodeReference || '')}&voucherChange=${encodeURIComponent(voucherChange || '')}&bizcoinUsed=${bizcoinUsed}&paymentFor=${encodeURIComponent(paymentFor || '')}&addon=${encodeURIComponent(addon || '')}`;
 
                 console.log("Redirecting to:", deepLink);
                 window.location.href = deepLink;
@@ -153,4 +175,6 @@
         redirectToDeepLink();
     </script>
 </body>
-</html> -->
+</html>
+
+ -->
